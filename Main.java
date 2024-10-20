@@ -13,6 +13,8 @@ import Panels.MainPanel;
 import Panels.StudentPanel;
 import Panels.TeacherPanel;
 import Provider.InstanceProvider;
+
+import java.awt.Color;
 import java.util.concurrent.CompletableFuture;
 
 public class Main {
@@ -60,33 +62,42 @@ public class Main {
         BookController bookController = new BookController();
         provider.addNewObject(bookController);
 
-        HistoryController historyController = new HistoryController();
+        HistoryController historyController = new HistoryController(bookController.getBooks());
         provider.addNewObject(historyController);
 
         return provider;
     }
 
     private static void createMainApplication(InstanceProvider provider, User user) {
+        
+        // Create the JFrame
         JFrame frame = new JFrame("PSU Library");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Set the frame size to the screen size
-        frame.setSize(1000, 800);
+        frame.setBackground(Color.black);
+        frame.setForeground(Color.white);
 
-        // Set the frame to full screen
+        // Set the frame size
+        frame.setSize(1000, 800);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+        // Create a JTabbedPane and set its background and foreground color
         JTabbedPane tabbedPane = new JTabbedPane();
+        
+        // tabbedPane.setBackground(new Color(50, 50, 50));  // Tab pane background
+        // tabbedPane.setForeground(new Color(230, 230, 230));  // Tab text color
 
         tabbedPane.addTab("Books", new MainPanel(frame, provider));
+
+        UserController controller = (UserController)provider.getInstance(UserController.class);
 
         //Admin mode
         if (user instanceof Admin) {
 
-            TeacherController teacherController = new TeacherController();
+            TeacherController teacherController = new TeacherController(controller.getTeachers());
             provider.addNewObject(teacherController);
 
-            StudentController studentController = new StudentController();
+            StudentController studentController = new StudentController(controller.getStudents());
             provider.addNewObject(studentController);
 
             tabbedPane.addTab("Students", new StudentPanel(provider));
@@ -95,7 +106,7 @@ public class Main {
 
         //Teacher mode
         if (user instanceof Teacher) {
-            TeacherController teacherController = new TeacherController();
+            TeacherController teacherController = new TeacherController(controller.getTeachers());
             provider.addNewObject(teacherController);
 
             tabbedPane.addTab("Students", new StudentPanel(provider));

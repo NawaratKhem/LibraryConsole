@@ -17,6 +17,7 @@ import java.util.Arrays;
 
 //Custom classes
 import Models.Book;
+import Models.User;
 import Controller.BookController;
 import Controller.HistoryController;
 import Provider.InstanceProvider;
@@ -42,10 +43,12 @@ public class MainPanel extends JPanel implements Observer {
     private final Color tableAlternateRowColor = new Color(24, 24, 24);
 
     private boolean isAdmin = false;
+    private User currentUser;
 
     public MainPanel(JFrame frame, InstanceProvider provider) {
 
         this.parentFrame = frame;
+        this.currentUser = provider.getCurrentUser();
         
         this._bookController = (BookController) provider.getInstance(BookController.class);
         this._bookController.addObserver(this);
@@ -469,7 +472,7 @@ public class MainPanel extends JPanel implements Observer {
             boolean success = _bookController.BorrowBook(id, days);
             if (success) {
                 JOptionPane.showMessageDialog(this, "Book borrowed successfully!");
-                _historyController.AddHistory(book, days);
+                _historyController.AddHistory(book, days, currentUser.name);
 
                 // Update the table
                 tableModel.setValueAt("Borrowed", row, 4);

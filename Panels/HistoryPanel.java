@@ -42,7 +42,7 @@ public class HistoryPanel extends JPanel implements Observer {
         setBackground(backgroundColor);
 
         // Table model for history
-        historyTableModel = new DefaultTableModel(new Object[]{"ID", "Name", "Borrowed On", "Return On", "Total Cost(฿)"}, 0);
+        historyTableModel = new DefaultTableModel(new Object[]{"ID", "Book title", "Borrower", "Borrowed On", "Return On", "Total Cost(฿)"}, 0);
         historyTable = new JTable(historyTableModel);
         styleTable(historyTable);
 
@@ -120,10 +120,11 @@ public class HistoryPanel extends JPanel implements Observer {
         for (History history : historyList) {
             historyTableModel.addRow(new Object[]{
                     history.getId(),
-                    history.getName(),
+                    history.getBook().getTitle(),
+                    history.getBorrowerName(),
                     history.getBorrowedOn(),
-                    history.getReturnOn(),
-                    String.format("%.2f", history.getCost())  // Format the cost to two decimal places
+                    history.getReturnedOn(),
+                    String.format("%.2f", history.getTotalCost())  // Format the cost to two decimal places
             });
         }
     }

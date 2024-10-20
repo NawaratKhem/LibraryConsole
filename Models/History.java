@@ -5,26 +5,26 @@ import java.time.temporal.ChronoUnit;
 
 public class History {
     private int id;
-    private String name;
+    private Book book;
+    private String borrowerName;
     private LocalDate borrowedOn;
-    private LocalDate returnOn;
-    private double cost;
-
-    private static final double COST_PER_DAY = 10.0; // 10 baht per day
+    private LocalDate returnedOn;
+    private double totalCost;
 
     // Constructor
-    public History(int id, String name, LocalDate borrowedOn, LocalDate returnOn) {
+    public History(int id, Book book, String borrowerName, LocalDate borrowedOn, LocalDate returnedOn) {
         this.id = id;
-        this.name = name;
+        this.book = book;
+        this.borrowerName = borrowerName;
         this.borrowedOn = borrowedOn;
-        this.returnOn = returnOn;
-        this.cost = calculateCost(borrowedOn, returnOn);
+        this.returnedOn = returnedOn;
+        this.totalCost = calculateTotalCost(borrowedOn, returnedOn, book);
     }
 
-    // Calculate the cost based on the number of days between borrowedOn and returnOn
-    private double calculateCost(LocalDate borrowedOn, LocalDate returnOn) {
-        long daysBetween = ChronoUnit.DAYS.between(borrowedOn, returnOn);
-        return daysBetween * COST_PER_DAY;
+    // Calculate the total cost using the book's cost methods
+    private double calculateTotalCost(LocalDate borrowedOn, LocalDate returnedOn, Book book) {
+        long daysBetween = ChronoUnit.DAYS.between(borrowedOn, returnedOn);
+        return book.TotalCost((int) daysBetween);  // Use the book's cost calculation method
     }
 
     // Getters
@@ -32,20 +32,23 @@ public class History {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public Book getBook() {
+        return book;
+    }
+
+    public String getBorrowerName() {
+        return borrowerName;
     }
 
     public LocalDate getBorrowedOn() {
         return borrowedOn;
     }
 
-    public LocalDate getReturnOn() {
-        return returnOn;
+    public LocalDate getReturnedOn() {
+        return returnedOn;
     }
 
-    public double getCost() {
-        return cost;
+    public double getTotalCost() {
+        return totalCost;
     }
 }
-

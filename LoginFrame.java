@@ -16,7 +16,7 @@ public class LoginFrame extends JFrame {
     private static final int FRAME_WIDTH = 800;
     private static final int FRAME_HEIGHT = 500;
     private static final int IMAGE_PANEL_WIDTH = 400;
-    private static final String BACKGROUND_IMAGE_PATH = "Images/cover.jpg";
+    private static final String BACKGROUND_IMAGE_PATH = "Images/books.jpg";
 
     // Dark theme colors
     private final Color backgroundColor = new Color(18, 18, 18);
